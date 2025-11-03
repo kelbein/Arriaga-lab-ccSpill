@@ -1,0 +1,171 @@
+---
+title: "introduction-to-ccSpill"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{introduction-to-ccSpill}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  eval = FALSE
+)
+```
+
+This vignette explains the full workflow for the ccSpill package.
+The goal is to load raw solution-mode data, process it, and generate a
+compensation spillover (ccSpill) matrix.
+
+First, we must load the ccSpill package itself.
+
+```{r setup}
+library(ccSpill)
+```
+
+#Step 0: Organizing Your Data
+
+Before running any code, ccSpill expects your raw data to be organized in a specific nested folder structure. The load_solution_data() function is designed to walk this structure automatically.
+
+Your main data folder (which you'll point to in Step 2) should look like this:
+
+```{r}
+data/
+├── date-1/
+│   ├── isotope-1/
+│   │   ├── level-1/
+│   │   │   ├── file_01.txt
+│   │   │   └── file_02.txt
+│   │   ├── level-2/
+│   │   │   └── file_03.txt
+│   │   └── ...
+│   ├── isotope-2/
+│   │   └── ...
+│   └── metals/
+│       └── ...
+├── date-2/
+│   ├── isotope-1/
+│   │   └── ...
+│   └── ...
+└── meta-data.csv
+```
+
+data/: The top-level folder.
+
+date-1/: A subfolder for each date.
+
+isotope-1/, metals/: Subfolders for each data type.
+
+level-1/, level-2/: Subfolders for each concentration level.
+
+file_01.txt: The raw data files. Note: these can be solution mode files, unprocessed. They do not need to be converted into txt files.
+
+Every date that has an isotope should also have metal solution files. The metal files do not need to have the same concentrations as the isotopes.
+
+The meta-data.csv file (which we load in Step 1) is used to look up what concentration level-1 corresponds to for a given date and data type. For each date and subfolder you are using, fill in the isotope, antibody (if wanted), and concentrations for each level (in pM).
+
+#Step 1: Load Concentration Metadata
+
+The first step is to load your meta-data.csv file. This file contains the concentration levels in picomolar for each isotope at each "level" in your experiment.
+
+The concentration_lookup() function loads this file, pivots it to a long
+("tidy") format, and extracts a list of valid isotope names.
+
+```{r}
+# Define the path to your metadata file
+meta_file_path <- "path/to/your/ccSpill/meta-data.csv"
+
+# Run the function
+conc_data <- concentration_lookup(file_path = meta_file_path)
+
+# You can inspect the results
+# print(conc_data$lookup_table)
+# print(conc_data$valid_isotopes)
+```
+
+#Step 2: Load and Process All Raw Data
+
+Next, we use the load_solution_data() function. This is the main
+data-loading engine of the package. It will walk through your nested data directory (Date > Subfolder > Level), read every raw data file, calculate the means, and join the results with the metadata from Step 1.
+
+```{r}
+# Define the path to your top-level data folder
+data_dir_path <- "path/to/your/ccSpill/data"
+
+# Run the main loading function
+# We pass in the results from the previous step
+all_data <- load_solution_data(
+  base_data_dir = data_dir_path,
+  conc_lookup = conc_data$lookup_table,
+  valid_isotope_names = conc_data$valid_isotopes
+  # We are using the default rename_my_cols = rename_as_isotopes
+)
+
+# The result is a large, nested list
+# str(all_data, max.level = 2)
+
+```
+
+#Step 3: Create the Spillover Matrix
+
+Now that all the data is loaded and processed, we can run the analysis.
+The create_ccSpill_matrix() function takes the all_data list and:
+
+Combines all data into one big data frame.
+
+Pivots it to a long format.
+
+Runs linear regressions (MeanSignal ~ concentration) for every
+isotope and channel.
+
+Calculates the isotope-to-metals ratios and their errors.
+
+Normalizes the results to create the final matrix. This spillover matrix is what can be used to correct cell mode data.
+
+This function returns a list containing both the final matrix and the
+data frame of ratios used for plotting.
+
+```{r}
+analysis_results <- create_ccSpill_matrix(all_data)
+
+# Inspect the final matrix
+# print(analysis_results$spillover_matrix)
+
+# Inspect the ratios data frame
+# print(head(analysis_results$ratios_dataframe))
+
+```
+
+#Step 4: Plot the Results
+
+Finally, we can visualize the results using the plotting functions. These functions use the ratios_dataframe that was generated in the previous step.
+
+##Plot 1: Normalized Spillover Matrix
+
+This plot shows the final, normalized spillover matrix. This is the matrix that is used to correct cell data.
+
+```{r}
+plot_norm <- plot_spillover_normalized(analysis_results$ratios_dataframe)
+
+# To display the plot, you would just run:
+# plot_norm
+
+```
+
+
+##Plot 2: Raw Ratio Values
+
+This plot shows the raw (non-normalized) isotope-to-metal ratios,
+including the propagated error. This is useful for diagnostics and seeing the raw signal intensities.
+
+```{r}
+plot_val <- plot_spillover_values(analysis_results$ratios_dataframe)
+
+# To display the plot, you would just run:
+# plot_val
+```
+
+
+
