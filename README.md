@@ -32,13 +32,13 @@ conc_lookup = meta$lookup_table,
 valid_isotope_names = meta$valid_isotopes)
 
 
-# Step 3: Create the spillover matrix
+## Step 3: Create the spillover matrix
 results <- create_ccSpill_matrix(all_data) #uses output from step 2
 
 results$spillover_matrix is the matrix that can be used to correct cell data
 
 
-# Step 4: Visualize matrices (optional)
+## Step 4: Visualize matrices (optional)
 plot_spillover_values(results$ratios_dataframe) #gives metals/antibody with error
 
 plot_spillover_normalized(results$ratios_dataframe) #gives spillover matrix (visually)
