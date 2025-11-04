@@ -23,3 +23,5 @@ Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+URL: https://github.umn.edu/Arriaga-lab/ccSpill
+BugReports: https://github.umn.edu/Arriaga-lab/ccSpill/issues
