@@ -1,6 +1,6 @@
-ccSpill
+## ccSpill
 
-This package is for creating a spillover matrix from the characterization data of metal-tagged antibodies.
+### This package is for creating a spillover matrix from the characterization data of metal-tagged antibodies.
 
 # Step 0, part 1: Install the package and load the library
 devtools::install_github(https://github.umn.edu/Arriaga-lab/ccSpill)
