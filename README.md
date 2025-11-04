@@ -46,24 +46,17 @@ plot_spillover_normalized(results$ratios_dataframe) #gives spillover matrix (vis
 
 ### Folder Structure
 #### Original file names can be kept, but the folder names should follow this format (date-1, isotope-1, level-1, etc.). You'll fill in what that information is (the isotope and concentration for each level) in meta-data.csv.
-data/
-├── date-1/
-│   ├── isotope-1/
-│   │   ├── level-1/
-│   │   │   ├── file_01.txt #doesn't need this name or to be a txt file; you can keep your original file name
-│   │   │   └── file_02.txt
-│   │   ├── level-2/
-│   │   │   └── file_03.txt
-│   │   └── ...
-│   ├── isotope-2/
-│   │   └── ...
-│   └── metals/
-│       └── ...
-├── date-2/
-│   ├── isotope-1/
-│   │   └── ...
-│   └── ...
-└── meta-data.csv
+Folder level 1: data/
+
+Folder level 2: meta-data.csv, date-1, date-2, etc.
+
+Folder level 2: metals, isotope-1, isotope-2, etc.
+
+Folder level 3: level-1, level-2, level-3, etc.
+
+Within folder level 3, store your files. You can keep the original file names.
+
+
 
 
 
