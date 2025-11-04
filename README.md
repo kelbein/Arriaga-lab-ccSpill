@@ -43,3 +43,27 @@ plot_spillover_values(results$ratios_dataframe) #gives metals/antibody with erro
 
 plot_spillover_normalized(results$ratios_dataframe) #gives spillover matrix (visually)
 
+
+### Folder Structure
+#### Original file names can be kept, but the folder names should follow this format (date-1, isotope-1, level-1, etc.). You'll fill in what that information is (the isotope and concentration for each level) in meta-data.csv.
+data/
+├── date-1/
+│   ├── isotope-1/
+│   │   ├── level-1/
+│   │   │   ├── file_01.txt #doesn't need this name or to be a txt file; you can keep your original file name
+│   │   │   └── file_02.txt
+│   │   ├── level-2/
+│   │   │   └── file_03.txt
+│   │   └── ...
+│   ├── isotope-2/
+│   │   └── ...
+│   └── metals/
+│       └── ...
+├── date-2/
+│   ├── isotope-1/
+│   │   └── ...
+│   └── ...
+└── meta-data.csv
+
+
+
