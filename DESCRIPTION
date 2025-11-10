@@ -2,8 +2,8 @@ Package: ccSpill
 Title: Builds a Spillover Matrix for Mass Cytometry Data
 Version: 0.0.0.9000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+    person("Kris", "Elbein", , "kelbein@gmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0001-9816-1707"))
 Description: Loads in metal-tagged antibody characterization data and uses the data to calculate the metal ion/antibody ratio and create a spillover matrix.
 License: MIT + file LICENSE
 Encoding: UTF-8
@@ -23,5 +23,5 @@ Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr
-URL: https://github.umn.edu/Arriaga-lab/ccSpill
-BugReports: https://github.umn.edu/Arriaga-lab/ccSpill/issues
+URL: https://github.com/kelbein/Arriaga-lab-ccSpill.git
+BugReports: https://github.com/kelbein/Arriaga-lab-ccSpill/issues
