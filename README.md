@@ -4,7 +4,7 @@
 
 ## Step 0, part 1: Install the package and load the library
 install.packages("devtools") # if needed
-devtools::install_github("kelbein/Arriaga-lab-ccSpill.git")
+devtools::install_github("kelbein/Arriaga-lab-ccSpill", build_vignettes = TRUE)
 
 library(ccSpill)
 
