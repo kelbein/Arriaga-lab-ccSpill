@@ -2,6 +2,7 @@
 
 export("%>%")
 export(concentration_lookup)
+export(create_ccSpill_folders)
 export(create_ccSpill_matrix)
 export(load_solution_data)
 export(plot_spillover_normalized)
