@@ -11,13 +11,25 @@ library(ccSpill)
 
 
 ## Step 0, part 2: Organize data
-Before using this package, organize solution mode data into folders according to the attached file structure. Each date folder (date-1, date-2) that 
+Organize solution mode data into folders according to the attached file structure. Each date folder (date-1, date-2) that 
 has at least one isotope (isotope-1) must also have metals. The concentrations for the levels (level-1, level-2, etc.) do not need to match. 
 Fill in meta-data.csv with the isotopes and their concentration levels, in picomolars. Leave empty folders blank (no need to delete).
 
 Run this code to see the data file structure:
 
 browseVignettes("ccSpill")
+
+
+
+Run this code to create a copy of the folder structure in your working directory.
+
+create_ccSpill_folders("folder-name")
+
+A folder will be created with "folder-name" within your working directory.
+
+If more folders are needed, create more with the same structure.
+
+Update meta-data.csv with the isotope, antibody, and concentrations in pM for the folders that contain data. The isotope column for the metals folder is "all".
 
 
 ## Step 1: Load the meta-data.csv file

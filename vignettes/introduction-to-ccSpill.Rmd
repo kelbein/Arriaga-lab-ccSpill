@@ -27,7 +27,7 @@ library(ccSpill)
 
 #Step 0: Organizing Your Data
 
-Before running any code, ccSpill expects your raw data to be organized in a specific nested folder structure. The load_solution_data() function is designed to walk this structure automatically.
+Before creating a matrix, ccSpill expects your raw data to be organized in a specific nested folder structure. The load_solution_data() function is designed to walk this structure automatically.
 
 Your main data folder (which you'll point to in Step 2) should look like this:
 
@@ -66,9 +66,28 @@ Every date that has an isotope should also have metal solution files. The metal 
 
 The meta-data.csv file (which we load in Step 1) is used to look up what concentration level-1 corresponds to for a given date and data type. For each date and subfolder you are using, fill in the isotope, antibody (if wanted), and concentrations for each level (in pM).
 
-#Step 1: Load Concentration Metadata
+#Step 1: Download file structure (optional)
 
-The first step is to load your meta-data.csv file. This file contains the concentration levels in picomolar for each isotope at each "level" in your experiment.
+A starter file structure can be accessed when you load the program. The create_ccSpill_folders("Name") function creates a new folder in your working directory with the name specified in quotes. This folder includes the meta-data.csv file.
+
+```{r}
+# Create a copy of the file structure with the meta-data csv file
+
+create_ccSpill_folders("name-of-folder")
+
+# A folder is created in your working directory. 
+# Navigate to that folder and drop your solution mode files in.
+```
+
+If more folders are needed, create them with the same structure. 
+
+Each date folder that has an isotope must also have a metals.
+
+
+
+#Step 2: Load Concentration Metadata
+
+The second step is to load your meta-data.csv file. This file contains the concentration levels in picomolar for each isotope at each "level" in your experiment.
 
 The concentration_lookup() function loads this file, pivots it to a long
 ("tidy") format, and extracts a list of valid isotope names.
@@ -85,7 +104,7 @@ conc_data <- concentration_lookup(file_path = meta_file_path)
 # print(conc_data$valid_isotopes)
 ```
 
-#Step 2: Load and Process All Raw Data
+#Step 3: Load and Process All Raw Data
 
 Next, we use the load_solution_data() function. This is the main
 data-loading engine of the package. It will walk through your nested data directory (Date > Subfolder > Level), read every raw data file, calculate the means, and join the results with the metadata from Step 1.
@@ -108,7 +127,7 @@ all_data <- load_solution_data(
 
 ```
 
-#Step 3: Create the Spillover Matrix
+#Step 4: Create the Spillover Matrix
 
 Now that all the data is loaded and processed, we can run the analysis.
 The create_ccSpill_matrix() function takes the all_data list and:
@@ -138,7 +157,7 @@ analysis_results <- create_ccSpill_matrix(all_data)
 
 ```
 
-#Step 4: Plot the Results
+#Step 5: Plot the Results
 
 Finally, we can visualize the results using the plotting functions. These functions use the ratios_dataframe that was generated in the previous step.
 
