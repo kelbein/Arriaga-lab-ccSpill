@@ -15,7 +15,7 @@ create_ccSpill_folders <- function(path) {
 
   # 1. Find the path to the template folder inside your installed package
   template_path <- system.file(
-    "data",
+    "templates", "my_project_template",
     package = "ccSpill"
   )
 
