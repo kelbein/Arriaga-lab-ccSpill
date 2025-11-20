@@ -130,11 +130,11 @@ load_solution_data <- function(base_data_dir,
         # Add all metadata to the single summary row
         summary_df_with_meta <- summary_df %>%
           dplyr::mutate(
-            concentration = .data$conc_value,
-            isotope = .data$isotope_value,
-            level = .data$current_level_name,
-            date = .data$current_date_name,
-            subfolder = .data$current_datatype_name
+            concentration = conc_value,
+            isotope = isotope_value,
+            level = current_level_name,
+            date = current_date_name,
+            subfolder = current_datatype_name
           ) %>%
           # Select lowercase columns
           dplyr::select(.data$date, .data$subfolder, .data$level, .data$isotope, .data$concentration,
