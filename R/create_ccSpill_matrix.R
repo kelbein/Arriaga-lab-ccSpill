@@ -40,8 +40,21 @@ create_ccSpill_matrix <- function(all_data) {
     lapply(all_data, dplyr::bind_rows)
   )
 
+
   # --- 2. PIVOT DATA TO A LONG (TIDY) FORMAT ---
   metadata_cols <- c("date", "subfolder", "level", "isotope", "concentration")
+
+  # Identify any columns that are NOT metadata
+  measurement_cols <- setdiff(names(all_summary_data), metadata_cols)
+
+  if (length(measurement_cols) == 0) {
+    stop(paste(
+      "Error: No measurement columns found in the loaded data.",
+      "This usually means the column names in your raw files (after renaming)",
+      "did not match the 'isotope' names in your meta-data.csv.",
+      "\n\nColumns found:", paste(names(all_summary_data), collapse = ", ")
+    ))
+  }
 
   long_data <- all_summary_data %>%
     tidyr::pivot_longer(
