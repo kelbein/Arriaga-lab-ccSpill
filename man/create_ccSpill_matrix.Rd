@@ -4,7 +4,7 @@
 \alias{create_ccSpill_matrix}
 \title{Create a Spillover Matrix from Loaded Data}
 \usage{
-create_ccSpill_matrix(data)
+create_ccSpill_matrix(all_data)
 }
 \arguments{
 \item{data}{A nested list of data frames, the output of

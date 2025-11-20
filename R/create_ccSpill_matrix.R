@@ -33,11 +33,11 @@
 #'
 #' @importFrom rlang .data
 #' @export
-create_ccSpill_matrix <- function(data) {
+create_ccSpill_matrix <- function(all_data) {
 
   # --- 1. COMBINE ALL NESTED LISTS INTO ONE DATA FRAME ---
   all_summary_data <- dplyr::bind_rows(
-    lapply(.data$all_data, dplyr::bind_rows)
+    lapply(all_data, dplyr::bind_rows)
   )
 
   # --- 2. PIVOT DATA TO A LONG (TIDY) FORMAT ---
@@ -91,8 +91,8 @@ create_ccSpill_matrix <- function(data) {
         ratio = .data$isotope_slope / .data$metals_slope,
         frac_error_iso_sq = ifelse(.data$isotope_slope == 0, 0, (.data$isotope_error / .data$isotope_slope)^2),
         frac_error_metals_sq = ifelse(.data$metals_slope == 0, 0, (.data$metals_error / .data$metals_slope)^2),
-        ratio_error = ifelse(.data$ratio == 0, 0,
-                             abs(.data$ratio) * sqrt(.data$frac_error_iso_sq + .data$frac_error_metals_sq))
+        ratio_error = ifelse(ratio == 0, 0,
+                             abs(ratio) * sqrt(frac_error_iso_sq + frac_error_metals_sq))
       ) %>%
       dplyr::select(
         .data$isotope,
@@ -113,8 +113,8 @@ create_ccSpill_matrix <- function(data) {
   df_ratios <- df_ratios %>%
     dplyr::group_by(.data$isotope) %>%
     dplyr::mutate(
-      ratio_norm = .data$ratio / .data$ratio[.data$isotope == .data$channel],
-      ratio_norm = ifelse(!is.finite(.data$ratio_norm) | .data$ratio_norm < 0.005, 0, .data$ratio_norm)
+      ratio_norm = ratio / ratio[isotope == channel],
+      ratio_norm = ifelse(!is.finite(ratio_norm) | ratio_norm < 0.005, 0, ratio_norm)
     ) %>%
     dplyr::ungroup()
 
