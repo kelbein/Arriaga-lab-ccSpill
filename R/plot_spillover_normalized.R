@@ -36,7 +36,7 @@ plot_spillover_normalized <- function(ratios_dataframe) {
       # Corrected: subset() is a base R function, no dplyr:: prefix needed
       # --- FIX ---
       # Also use .data$ inside the filter/subset
-      data = subset(ratios_dataframe, .data$ratio_norm != 0),
+      data = dplyr::filter(ratios_dataframe, .data$ratio_norm != 0),
       # --- FIX ---
       ggplot2::aes(label = round(.data$ratio_norm, 2)), size = 3
     ) +

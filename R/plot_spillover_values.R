@@ -39,7 +39,7 @@ plot_spillover_values <- function(ratios_dataframe) {
     ggplot2::ggplot(ggplot2::aes(x = .data$Measured_Channel, y = .data$Source_Channel, fill = .data$ratio)) +
     ggplot2::geom_tile(color = "black") +
     ggplot2::geom_text(
-      data = subset(df_ratios_to_plot, .data$ratio_norm != 0),
+      data = dplyr::filter(df_ratios_to_plot, .data$ratio_norm != 0),
       ggplot2::aes(label = .data$ratio_label), size = 2
     ) +
     ggplot2::scale_fill_gradient(low = "white", high = "#4477AA") +
